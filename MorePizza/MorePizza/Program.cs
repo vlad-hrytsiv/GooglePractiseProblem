@@ -36,7 +36,7 @@ namespace MorePizza
 
             Program program = new Program();
 
-            for (int i = 1; i <= pizzaSlices.Length; i++)
+            /*for (int i = 1; i <= pizzaSlices.Length; i++)
             {
                 for (int j = 1; j <= numberOfParticipants; j++)
                 {
@@ -44,7 +44,7 @@ namespace MorePizza
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine();
+            Console.WriteLine();*/
 
             Console.Write("Answer: "+program.getDynamicTable(pizzaSlices, numberOfParticipants)[numberOfParticipants, pizzaSlices.Length]+"\n");
         }
