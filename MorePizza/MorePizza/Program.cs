@@ -33,18 +33,18 @@ namespace MorePizza
             secondLineNums = Array.ConvertAll(line.Split(' '), int.Parse);
             return secondLineNums;
         } 
-        public int[,] getDynamicTable(int[] pizzaSlices, int numberOfParticipants)
+        public int[,] getDynamicTable(int[] pizzaSlices, int maxSlices)
         {
-            int n = pizzaSlices.Length;
-            int[,] dynamicTable = new int[numberOfParticipants + 1, n + 1];
+            int[,] dynamicTable = new int[maxSlices + 1, pizzaSlices.Length + 1];
 
-            for (int j = 1; j <= n; j++)
+            for (int j = 1; j <= pizzaSlices.Length; j++)
             {
-                for (int i = 1; i <= numberOfParticipants; i++)
+                for (int i = 1; i <= maxSlices; i++)
                 {
                     if (pizzaSlices[j - 1] <= i)
                     {
                         dynamicTable[i, j] = Math.Max(dynamicTable[i, j - 1], dynamicTable[i - pizzaSlices[j - 1], j - 1] + pizzaSlices[j - 1]);
+
                     }
                     else
                     {
@@ -74,9 +74,11 @@ namespace MorePizza
 
             Program program = new Program();
 
-            DisplayTable(program.getDynamicTable(pizzaSlices, maxSlices), pizzaSlices, maxSlices);
+            int[,] readyTable = program.getDynamicTable(pizzaSlices, maxSlices);
 
-            Console.Write("Answer: " + program.getDynamicTable(pizzaSlices, maxSlices)[maxSlices, pizzaSlices.Length] + "\n");
+            // DisplayTable(readyTable, pizzaSlices, maxSlices);
+
+            Console.Write("Answer: " + readyTable[maxSlices, pizzaSlices.Length] + "\n");
         }
     }
 }
