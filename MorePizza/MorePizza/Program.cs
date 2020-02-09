@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +8,31 @@ namespace MorePizza
 {
     class Program
     {
+        /* Функція для отримання даних з файлу */
+        static int[] GetInfo(ref int a, ref int b)
+        {
+            string path = @"C:\Users\Vlad Hrytsiv\Downloads\b_small.in";
+            string line;
+            int[] firstLineNums, secondLineNums;
+            System.IO.StreamReader file = new System.IO.StreamReader(path);
+            
+            line = file.ReadLine(); // Читання першого рядка файлу
+
+
+            /* Перетворення першого рядка в массив, а далі в змінні */
+            firstLineNums = Array.ConvertAll(line.Split(' '), int.Parse);
+
+            int maxSlices = firstLineNums[0];
+            int pizzaTypes = firstLineNums[1];
+
+            a = maxSlices;
+            b = pizzaTypes;
+            
+            line = file.ReadLine(); // Перетворення другого рядка в массив
+
+            secondLineNums = Array.ConvertAll(line.Split(' '), int.Parse);
+            return secondLineNums;
+        } 
         public int[,] getDynamicTable(int[] pizzaSlices, int numberOfParticipants)
         {
             int n = pizzaSlices.Length;
@@ -31,36 +54,29 @@ namespace MorePizza
             }
             return dynamicTable;
         }
-        static void Main(string[] args)
+
+        static void DisplayTable(int[,] user_Table, int[] width, int length)
         {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            int[] pizzaSlices = new int[50] { 7, 12, 12, 13, 14, 28, 29, 29, 30, 32, 32, 34, 41, 45, 46, 56, 61, 61, 62 ,63 ,65,68 ,76 ,77 ,77 , 92, 93 ,94, 97, 103 ,113, 114, 114, 120, 135 ,145 ,145 ,149 ,156, 157, 160 ,169 ,172 ,179, 184, 185 ,189, 194, 195, 195 }; 
-            int numberOfParticipants = 4500;
-
-            Program program = new Program();
-
-            /*for (int i = 1; i <= pizzaSlices.Length; i++)
+            for (int i = 1; i <= width.Length; i++)
             {
-                for (int j = 1; j <= numberOfParticipants; j++)
+                for (int j = 1; j <= length; j++)
                 {
-                    Console.Write(program.getDynamicTable(pizzaSlices, numberOfParticipants)[j, i] + " ");
+                    Console.Write(user_Table[j, i] + " ");
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine();*/
+            Console.WriteLine();
+        }
+        static void Main(string[] args)
+        {
+            int maxSlices = 0, pizzaTypes = 0;
+            int[] pizzaSlices = GetInfo(ref maxSlices, ref pizzaTypes);
 
-            Console.Write("Answer: "+program.getDynamicTable(pizzaSlices, numberOfParticipants)[numberOfParticipants, pizzaSlices.Length]+"\n");
-            stopWatch.Stop();
-            // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = stopWatch.Elapsed;
+            Program program = new Program();
 
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:000000}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 1);
-            Console.WriteLine("RunTime " + elapsedTime);
+            DisplayTable(program.getDynamicTable(pizzaSlices, maxSlices), pizzaSlices, maxSlices);
+
+            Console.Write("Answer: " + program.getDynamicTable(pizzaSlices, maxSlices)[maxSlices, pizzaSlices.Length] + "\n");
         }
     }
 }
